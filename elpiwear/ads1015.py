@@ -1,5 +1,28 @@
-import smbus
-import time
+# The MIT License (MIT)
+#
+# Copyright (c) 2015 Frederic Jacob
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+
+#Simple driver for the Adafruit ADS1015 board. Can be used in single shot
+#conversion mode or in continuous mode
 
 ADS1015_CONVERT_REG         = 0x0000
 ADS1015_CONFIG_REG          = 0x0001
@@ -68,22 +91,15 @@ ADS1015_RDY_HTRESH          = 0x8FFF
 
 class ads1015:
 
-    def __init__(self,spi):# i2cport, i2caddress):
-        #self.address = i2caddress
-        #self.bus = smbus.SMBus(i2cport)
+    def __init__(self,spi):
         self.spi = spi
         self.config = self.readconfig()
         self.channel = self.readchannel()
 
     def writeregister(self, register, value):
         self.spi.writeregister(register,value)
-        #value = ((value&0xff) << 8) | (value>>8)
-        #self.bus.write_word_data(self.address, register, value)
 
     def readregister(self, register):
-        #value = self.bus.read_word_data(self.address, register)
-        #value = ((value&0xff) << 8) | (value>>8)
-        #return value
         return self.spi.readregister(register)
 
     def readconfig(self):
