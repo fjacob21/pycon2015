@@ -193,7 +193,7 @@ class ads1015:
         self.writeconfig()
 
     def getvalue(self):
-        self.setstartbit()
+        self.setstartbit(True)
         count=0
         while(1):
             count=count+1
