@@ -1,6 +1,6 @@
 import smbus
 
-class spi:
+class i2c:
     def __init__(self, i2cport, i2caddress):
         self.address = i2caddress
         self.bus = smbus.SMBus(i2cport)

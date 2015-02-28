@@ -91,16 +91,16 @@ ADS1015_RDY_HTRESH          = 0x8FFF
 
 class ads1015:
 
-    def __init__(self,spi):
-        self.spi = spi
+    def __init__(self,i2c):
+        self.i2c = i2c
         self.config = self.readconfig()
         self.channel = self.readchannel()
 
     def writeregister(self, register, value):
-        self.spi.writeregister(register,value)
+        self.i2c.writeregister(register,value)
 
     def readregister(self, register):
-        return self.spi.readregister(register)
+        return self.i2c.readregister(register)
 
     def readconfig(self):
         return self.readregister(ADS1015_CONFIG_REG);
