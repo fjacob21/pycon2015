@@ -34,6 +34,9 @@ class spi:
         self.spi.max_speed_hz=max_speed_hz
         self.spi.mode = mode
 
+    def __del__(self):
+        self.spi.close()
+
     def write(self, data):
         self.spi.writebytes(data)
 
