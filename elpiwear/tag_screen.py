@@ -3,37 +3,28 @@ import ImageDraw
 import ImageFont
 import screen
 
-def draw_rotated_text(image, text, position, angle, font, fill=(255,255,255)):
-    # Get rendered font width and height.
-    draw = ImageDraw.Draw(image)
-    width, height = draw.textsize(text, font=font)
-    # Create a new image with transparent background to store the text.
-    textimage = Image.new('RGBA', (width, height), (0,0,0,0))
-    # Render the text.
-    textdraw = ImageDraw.Draw(textimage)
-    textdraw.text((0,0), text, font=font, fill=fill)
-    # Rotate the text image.
-    rotated = textimage.rotate(angle, expand=1)
-    # Paste the text into the image, using it as a mask for transparency.
-    image.paste(rotated, position, rotated)
-
 class tag_screen(screen.screen):
 
     def __init__(self):
         screen.screen.__init__(self)
-        self.img.putdata([(0,0,255)]*(240*320))
+        self.me = Image.open('me.png')
+        self.me = self.me.resize((100,100))
+        self.display_tag()
+        self.update()
 
-        self.image = Image.open('me.png')
-        self.image = self.image.rotate(90).resize((100,100))
-        self.img.paste(self.image,(0,220,100,320))
-
-        self.font = ImageFont.truetype('arial.ttf', 30)
-        draw_rotated_text(self.img, 'Frederic Jacob', (0, 3), 90, ImageFont.truetype('arial.ttf', 33), fill=(255,0,0))
-        draw_rotated_text(self.img, 'Software Engineer', (40, 30), 90, ImageFont.truetype('arial.ttf', 20), fill=(255,0,0))
-        draw_rotated_text(self.img, 'C/C++, Python...', (110, 130), 90, ImageFont.truetype('arial.ttf', 25), fill=(255,0,0))
-        draw_rotated_text(self.img, 'Linux kernel contributor', (140, 55), 90, ImageFont.truetype('arial.ttf', 25), fill=(255,0,0))
-        draw_rotated_text(self.img, 'Tw: @IngenieurJacob', (170, 72), 90, ImageFont.truetype('arial.ttf', 25), fill=(255,0,0))
-        draw_rotated_text(self.img, 'GH: fjacob21', (200, 167), 90, ImageFont.truetype('arial.ttf', 25), fill=(255,0,0))
+    def display_tag(self):
+        self.back.putdata([(255,255,255)]*(240*320))
+        lw,lh = self.draw_image(self.me, (0,0))
+        self.draw_text('Frederic Jacob', (lw + 3, 0), ImageFont.truetype('Montserrat-Bold.ttf', 25), fill=(0,0,0))
+        self.draw_text('Software Engineer', (lw + 3, 30), ImageFont.truetype('Montserrat-Regular.ttf', 20), fill=(0,0,0))
+        self.draw_text('C/C++, Python...', (5, lh+10), ImageFont.truetype('Montserrat-Regular.ttf', 25), fill=(0,0,0))
+        self.draw_text('Linux kernel contributor', (5, lh + 40), ImageFont.truetype('Montserrat-Regular.ttf', 25), fill=(0,0,0))
+        twimg = Image.open("Twitter_logo_blue.png").resize((20,20))
+        tw,th = self.draw_image(twimg, (5,lh + 78), twimg)
+        self.draw_text(': @IngenieurJacob', (tw+10, lh + 70), ImageFont.truetype('Montserrat-Regular.ttf', 25), fill=(0,0,0))
+        ghimg = Image.open("GitHub-Mark-32px.png").resize((20,20))
+        gw,gh = self.draw_image(ghimg, (5,lh + 108), ghimg)
+        self.draw_text(': fjacob21', (gw + 10, lh + 100), ImageFont.truetype('Montserrat-Regular.ttf', 25), fill=(0,0,0))
 
     def update(self):
-        pass
+        screen.screen.update(self)
