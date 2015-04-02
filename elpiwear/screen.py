@@ -18,7 +18,7 @@ class screen:
 
     def draw_text_wrap(self, text, position, wrap, font, fill=(255,255,255)):
         lines = textwrap.wrap(text, width = wrap)
-        y_text = position[0]
+        y_text = position[1]
         max_width = 0
         for line in lines:
             width, height = font.getsize(line)
