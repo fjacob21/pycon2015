@@ -17,7 +17,6 @@ class twitter_screen(screen.screen):
         self.token_key = "lkXmLQ3WvaOEuL7C0DhMedn3vL18xiSXNEGy3grIj267x"
         self.con_secret = "Mw1OHJoR7MEKBb4JyfW7twMbP"
         self.con_secret_key = "jsSWH9w5xF7102MTEvoYixECFzIh4ZeaPp9H30baSxW2UISl4R"
-        #self.back = Image.new('RGBA', (320, 240), (0,0,0,0))
         self.twitter = twitter.Twitter(auth=twitter.OAuth(self.token, self.token_key, self.con_secret, self.con_secret_key))
         self.twimage = Image.open(self.param["logo"])
         self.twimage = self.twimage.resize((40,40))
@@ -33,13 +32,10 @@ class twitter_screen(screen.screen):
         ax,ay = self.display_avatar(pycon, (5,5))
         ux,uy = self.display_user(pycon, (ax+10, 5))
         self.draw_image(self.twimage,(ax+10+ux+10,5),self.twimage)
-        #self.back.paste(self.twimage,(ux+30,5,ux+30+40,45),self.twimage)
         self.display_text(pycon, (0, ay+10))
-        #self.img.paste(self.back.rotate(-90),(0,0,240,320))
         screen.screen.update(self)
 
     def get_latess_tweet(self):
-        # Get your "home" timeline
         pycon = self.twitter.search.tweets(q="pycon", lang="en")
         user = pycon["statuses"][0]["user"]["screen_name"].encode('utf-8')
         name = pycon["statuses"][0]["user"]["name"].encode('utf-8')
@@ -52,7 +48,6 @@ class twitter_screen(screen.screen):
     def display_avatar(self,pycon, position):
         self.image = Image.open(pycon["avatar"])
         self.image = self.image.resize((55,55))
-        #self.back.paste(self.image,(5,5,60,60))
         return self.draw_image(self.image, position)
 
     def display_user(self,pycon, position):
