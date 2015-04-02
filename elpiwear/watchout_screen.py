@@ -14,10 +14,9 @@ class watchout_screen(screen.screen):
         self.bfont = ImageFont.truetype('Montserrat-Regular.ttf', 66)
         self.font = ImageFont.truetype('Montserrat-Regular.ttf', 65)
         self.count = 0
-        self.draw_text('Watchout!!', (0, 100), self.bfont, fill=(255,0,0))
-        self.draw_text('Watchout!!', (0, 100), self.font, fill=(255,255,255))
+        self.display()
 
-    def update(self):
+    def display(self):
         self.draw_image(self.image , (0,0))
         if self.count == 0 :
             self.draw_text('Watchout!!', (0, 100), self.bfont, fill=(255,255,255))
@@ -27,3 +26,6 @@ class watchout_screen(screen.screen):
             self.draw_text('Watchout!!', (0, 100), self.font, fill=(255,255,255))
         self.count = 1 - self.count
         screen.screen.update(self)
+
+    def update(self):
+        self.display()
