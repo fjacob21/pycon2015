@@ -29,5 +29,6 @@ class screen:
 
     def draw_image(self, image, position, mask=None):
         size = image.getbbox()
-        self.back.paste(image,(position[0], position[1], position[0] + size[2], position[1] + size[3]), mask)
-        return size[2],size[3]
+        size = image.size
+        self.back.paste(image,(position[0], position[1], position[0] + size[0], position[1] + size[1]), mask)
+        return size[0],size[1]
