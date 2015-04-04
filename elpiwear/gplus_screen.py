@@ -53,7 +53,7 @@ class gplus_screen(screen.screen):
     def display_avatar(self,pycon, position):
         self.image = Image.open(pycon["avatar"])
         self.image = self.image.resize((55,55))
-        return self.draw_image(self.image, position,self.image)
+        return self.draw_image(self.image, position)
 
     def display_user(self,pycon, position):
         nw,nh = self.draw_text_wrap(pycon["user"], position, 10, ImageFont.truetype('Montserrat-Bold.ttf', 18), fill=self.param["textcolor"])
