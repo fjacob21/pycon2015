@@ -5,6 +5,8 @@ import screen
 import twitter
 import urllib
 import textwrap
+import re
+import time
 
 class twitter_screen(screen.screen):
 
@@ -20,30 +22,39 @@ class twitter_screen(screen.screen):
         self.twitter = twitter.Twitter(auth=twitter.OAuth(self.token, self.token_key, self.con_secret, self.con_secret_key))
         self.twimage = Image.open(self.param["logo"])
         self.twimage = self.twimage.resize((40,40))
+        self.update_time = 60*15 #In second!!
         self.display_last_tweet()
 
     def update(self):
-        self.display_last_tweet()
+        if (time.time() - self.last_update) > self.update_time:
+            return self.display_last_tweet()
+        return False
 
     def display_last_tweet(self):
         pycon = self.get_latess_tweet()
-
-        self.back.putdata([self.param["backcolor"]]*(240*320))
-        ax,ay = self.display_avatar(pycon, (5,5))
-        ux,uy = self.display_user(pycon, (ax+10, 5))
-        self.draw_image(self.twimage,(ax+10+ux+10,5),self.twimage)
-        self.display_text(pycon, (0, ay+10))
-        screen.screen.update(self)
+        if pycon is not None:
+            self.back.putdata([self.param["backcolor"]]*(240*320))
+            ax,ay = self.display_avatar(pycon, (5,5))
+            ux,uy = self.display_user(pycon, (ax+10, 5))
+            self.draw_image(self.twimage,(ax+10+ux+10,5),self.twimage)
+            self.display_text(pycon, (0, ay+10))
+            self.last_pycon = pycon
+            return screen.screen.update(self)
+        return False
 
     def get_latess_tweet(self):
-        pycon = self.twitter.search.tweets(q="pycon", lang="en")
-        user = pycon["statuses"][0]["user"]["screen_name"].encode('utf-8')
-        name = pycon["statuses"][0]["user"]["name"].encode('utf-8')
-        text = pycon["statuses"][0]["text"].encode('utf-8')
-        avatar = pycon["statuses"][0]["user"]["profile_image_url"].encode('utf-8')
-        avatar_filename = avatar.split('/')[-1]
-        urllib.urlretrieve (avatar, avatar_filename)
-        return {"user":user,"name":name,"text":text,"avatar":avatar_filename}
+        try:
+            pycon = self.twitter.search.tweets(q="pycon", lang="en")
+            user = pycon["statuses"][0]["user"]["screen_name"].encode('utf-8')
+            name = pycon["statuses"][0]["user"]["name"].encode('utf-8')
+            text = pycon["statuses"][0]["text"].encode('utf-8')
+            text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text)
+            avatar = pycon["statuses"][0]["user"]["profile_image_url"].encode('utf-8')
+            avatar_filename = avatar.split('/')[-1]
+            urllib.urlretrieve (avatar, avatar_filename)
+            return {"user":user,"name":name,"text":text,"avatar":avatar_filename}
+        except:
+            return None
 
     def display_avatar(self,pycon, position):
         self.image = Image.open(pycon["avatar"])

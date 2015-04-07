@@ -11,17 +11,23 @@ import proximity_warning
 import twitter_screen
 import tag_screen
 import gplus_screen
+import time
 
 class pycon():
 
     def __init__(self):
+        self.switch_time = 60*1 #1Min
         self.init_display()
         self.init_screens()
         while 1:
-            self.screens[self.current_screen].update()
+            #self.screens[self.current_screen].update()
             self.disp.display(self.screens[self.current_screen].img)
-            time.sleep(60*1)
-            self.current_screen = (self.current_screen + 1) % len(self.screens)
+            screen_start = time.time()
+            while (time.time()-screen_start) < self.switch_time:
+                if self.screens[self.current_screen].update():
+                    self.disp.display(self.screens[self.current_screen].img)
+                time.sleep(0.100)
+            self.current_screen = (self.current_screen + 1) % len(self.screens) # -1 #To remove watchout screen
 
     def init_display(self):
         dc = GPIO.gpio(4, GPIO.OUT)
@@ -34,8 +40,8 @@ class pycon():
         self.watchout = watchout_screen.watchout_screen()
         self.twitter = twitter_screen.twitter_screen()
         self.gplus = gplus_screen.gplus_screen()
-        self.screens = [self.tag, self.watchout, self.twitter, self.gplus]
-        self.current_screen = 0
+        self.screens = [self.tag, self.twitter, self.gplus, self.watchout]
+        self.current_screen = 2
 
 if __name__ == "__main__":
     main = pycon()

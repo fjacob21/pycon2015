@@ -25,7 +25,7 @@ class watchout_screen(screen.screen):
             self.draw_text('Watchout!!', (0, 100), self.bfont, fill=(255,0,0))
             self.draw_text('Watchout!!', (0, 100), self.font, fill=(255,255,255))
         self.count = 1 - self.count
-        screen.screen.update(self)
+        return screen.screen.update(self)
 
     def update(self):
-        self.display()
+        return self.display()

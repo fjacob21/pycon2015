@@ -27,4 +27,4 @@ class tag_screen(screen.screen):
         self.draw_text(': fjacob21', (gw + 10, lh + 100), ImageFont.truetype('Montserrat-Regular.ttf', 25), fill=(0,0,0))
 
     def update(self):
-        screen.screen.update(self)
+        return screen.screen.update(self)

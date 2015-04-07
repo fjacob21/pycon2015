@@ -7,6 +7,7 @@ import urllib
 import textwrap
 import json
 import re
+import time
 
 class gplus_screen(screen.screen):
 
@@ -16,39 +17,47 @@ class gplus_screen(screen.screen):
                         "red":{"backcolor":(85,112,238),"textcolor":(0,0,0), "logo":"Red-signin-Small-base-44dp.png"}}
         self.param = self.params["white"]
         self.posturl = "https://www.googleapis.com/plus/v1/activities?query=pycon&language=en&key=AIzaSyDDNE6OhN1PxPNRwYxlct6ZXj1VX67Pxo8"
-
         self.twimage = Image.open(self.param["logo"])
         self.twimage = self.twimage.resize((40,40))
+        self.update_time = 60*15 #In second!!
         self.display_last_post()
 
     def update(self):
-        self.display_last_post()
+        if (time.time() - self.last_update) > self.update_time:
+            return self.display_last_post()
+        return False
 
     def display_last_post(self):
         pycon = self.get_latess_post()
-
-        self.back.putdata([self.param["backcolor"]]*(240*320))
-        ax,ay = self.display_avatar(pycon, (5,5))
-        ux,uy = self.display_user(pycon, (ax+10, 5))
-        self.draw_image(self.twimage,(ax+10+ux+10,5),self.twimage)
-        self.display_text(pycon, (0, ay+10))
-        screen.screen.update(self)
+        if pycon is not None:
+            self.back.putdata([self.param["backcolor"]]*(240*320))
+            ax,ay = self.display_avatar(pycon, (5,5))
+            ux,uy = self.display_user(pycon, (ax+10, 5))
+            self.draw_image(self.twimage,(ax+10+ux+10,5),self.twimage)
+            self.display_text(pycon, (0, ay+10))
+            self.last_pycon = pycon
+            return screen.screen.update(self)
+        return False
 
     def get_latess_post(self):
-        response = urllib2.urlopen(self.posturl)
-        posts = response.read()
-        pycon = json.loads(posts)
-        user = pycon["items"][0]["actor"]["displayName"].encode('utf-8')
-        text = pycon["items"][0]["object"]["content"].encode('utf-8')
-        tag=re.compile(r'<[^>]+>')
-        text = tag.sub('',text)
-        #text = html.fromstring(text).text
-        self.text=text
-        self.textu = pycon["items"][0]["object"]["content"]
-        avatar = pycon["items"][0]["actor"]["image"]["url"].encode('utf-8')
-        avatar_filename = 'photo.jpg'
-        urllib.urlretrieve (avatar, avatar_filename)
-        return {"user":user,"text":text,"avatar":avatar_filename}
+        try:
+            response = urllib2.urlopen(self.posturl)
+            posts = response.read()
+            pycon = json.loads(posts)
+            user = pycon["items"][0]["actor"]["displayName"].encode('utf-8')
+            text = pycon["items"][0]["object"]["content"].encode('utf-8')
+            tag=re.compile(r'<[^>]+>')
+            text = tag.sub('',text)
+            text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text)
+            #text = html.fromstring(text).text
+            self.text=text
+            self.textu = pycon["items"][0]["object"]["content"]
+            avatar = pycon["items"][0]["actor"]["image"]["url"].encode('utf-8')
+            avatar_filename = 'photo.jpg'
+            urllib.urlretrieve (avatar, avatar_filename)
+            return {"user":user,"text":text,"avatar":avatar_filename}
+        except:
+            return None
 
     def display_avatar(self,pycon, position):
         self.image = Image.open(pycon["avatar"])
