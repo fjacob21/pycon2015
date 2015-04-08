@@ -7,6 +7,7 @@ import urllib
 import textwrap
 import re
 import time
+from HTMLParser import HTMLParser
 
 class twitter_screen(screen.screen):
 
@@ -47,8 +48,10 @@ class twitter_screen(screen.screen):
             pycon = self.twitter.search.tweets(q="pycon", lang="en")
             user = pycon["statuses"][0]["user"]["screen_name"].encode('utf-8')
             name = pycon["statuses"][0]["user"]["name"].encode('utf-8')
-            text = pycon["statuses"][0]["text"].encode('utf-8')
-            text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text)
+            text = pycon["statuses"][0]["text"] #.encode('utf-8')
+            text = HTMLParser().unescape(text)
+            #text = re.sub(r'^http?:\/\/.*[\r\n]*', '', text)
+            text = re.sub(r'\w+:\/{2}[\d\w-]+(\.[\d\w-]+)*(?:(?:\/[^\s/]*))*', '', text)
             avatar = pycon["statuses"][0]["user"]["profile_image_url"].encode('utf-8')
             avatar_filename = avatar.split('/')[-1]
             urllib.urlretrieve (avatar, avatar_filename)

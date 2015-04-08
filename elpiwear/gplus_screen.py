@@ -8,6 +8,7 @@ import textwrap
 import json
 import re
 import time
+from HTMLParser import HTMLParser
 
 class gplus_screen(screen.screen):
 
@@ -45,11 +46,12 @@ class gplus_screen(screen.screen):
             posts = response.read()
             pycon = json.loads(posts)
             user = pycon["items"][0]["actor"]["displayName"].encode('utf-8')
-            text = pycon["items"][0]["object"]["content"].encode('utf-8')
+            text = pycon["items"][0]["object"]["content"] #.encode('utf-8')
+            text = HTMLParser().unescape(text)
             tag=re.compile(r'<[^>]+>')
             text = tag.sub('',text)
-            text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text)
-            #text = html.fromstring(text).text
+            text = re.sub(r'\w+:\/{2}[\d\w-]+(\.[\d\w-]+)*(?:(?:\/[^\s/]*))*', '', text)
+            #text = re.sub(r'^http?:\/\/.*[\r\n]*', '', text)
             self.text=text
             self.textu = pycon["items"][0]["object"]["content"]
             avatar = pycon["items"][0]["actor"]["image"]["url"].encode('utf-8')
