@@ -16,18 +16,20 @@ import time
 class pycon():
 
     def __init__(self):
-        self.switch_time = 60*1 #1Min
         self.init_display()
         self.init_screens()
+        detect = GPIO.gpio(14, GPIO.IN)
         while 1:
             #self.screens[self.current_screen].update()
             self.disp.display(self.screens[self.current_screen].img)
             screen_start = time.time()
-            while (time.time()-screen_start) < self.switch_time:
+            while (time.time()-screen_start) < self.screens[self.current_screen].focus_time:
                 if self.screens[self.current_screen].update():
                     self.disp.display(self.screens[self.current_screen].img)
                 time.sleep(0.100)
-            self.current_screen = (self.current_screen + 1) % len(self.screens) # -1 #To remove watchout screen
+                if detect.input() == 1 and (time.time()-self.watchout.last_update) > 60*1:
+                    self.current_screen = 3
+            self.current_screen = (self.current_screen + 1) % (len(self.screens)-1) #To remove watchout screen
 
     def init_display(self):
         dc = GPIO.gpio(4, GPIO.OUT)

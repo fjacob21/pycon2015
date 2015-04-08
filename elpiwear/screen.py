@@ -10,6 +10,7 @@ class screen:
         self.back = Image.new('RGBA', (320, 240), (0,0,0,0))
         self.draw = ImageDraw.Draw(self.back)
         self.last_update = 0
+        self.focus_time = 60*1;
 
     def update(self):
         self.img.paste(self.back.rotate(-90),(0,0,240,320))

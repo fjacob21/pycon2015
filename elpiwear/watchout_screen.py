@@ -14,7 +14,8 @@ class watchout_screen(screen.screen):
         self.bfont = ImageFont.truetype('Montserrat-Regular.ttf', 66)
         self.font = ImageFont.truetype('Montserrat-Regular.ttf', 65)
         self.count = 0
-        self.display()
+        self.focus_time = 5;
+        #self.display()
 
     def display(self):
         self.draw_image(self.image , (0,0))
