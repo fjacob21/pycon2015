@@ -27,7 +27,7 @@ class pycon():
                 if self.screens[self.current_screen].update():
                     self.disp.display(self.screens[self.current_screen].img)
                 time.sleep(0.100)
-                if detect.input() == 1 and (time.time()-self.watchout.last_update) > 60*1:
+                if detect.input() == 1 and (time.time()-self.watchout.last_update) > 60*5:
                     self.current_screen = 3
             self.current_screen = (self.current_screen + 1) % (len(self.screens)-1) #To remove watchout screen
 
@@ -43,7 +43,7 @@ class pycon():
         self.twitter = twitter_screen.twitter_screen()
         self.gplus = gplus_screen.gplus_screen()
         self.screens = [self.tag, self.twitter, self.gplus, self.watchout]
-        self.current_screen = 2
+        self.current_screen = 0
 
 if __name__ == "__main__":
     main = pycon()
