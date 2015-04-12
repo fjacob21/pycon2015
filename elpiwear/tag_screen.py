@@ -10,6 +10,8 @@ class tag_screen(screen.screen):
         screen.screen.__init__(self)
         self.me = Image.open('me.png')
         self.me = self.me.resize((100,100))
+        self.twimg = Image.open("Twitter_logo_blue.png").resize((20,20))
+        self.ghimg = Image.open("GitHub-Mark-32px.png").resize((20,20))
         self.display_tag()
         self.update()
 
@@ -18,14 +20,14 @@ class tag_screen(screen.screen):
         lw,lh = self.draw_image(self.me, (0,0))
         self.draw_text('Frederic Jacob', (lw + 3, 0), ImageFont.truetype('Montserrat-Bold.ttf', 28), fill=(0,0,0))
         self.draw_text('Software Engineer', (lw + 3, 30), ImageFont.truetype('Montserrat-Regular.ttf', 23), fill=(0,0,0))
-        self.draw_text(time.strftime('%H:%M'), (lw + 70, 70), ImageFont.truetype('Montserrat-Regular.ttf', 23), fill=(0,0,0))
+        #self.draw_text(time.strftime('%H:%M'), (lw + 70, 70), ImageFont.truetype('Montserrat-Regular.ttf', 23), fill=(0,0,0))
         self.draw_text('C/C++, Python...', (5, lh+10), ImageFont.truetype('Montserrat-Regular.ttf', 25), fill=(0,0,0))
         self.draw_text('Linux kernel contributor', (5, lh + 40), ImageFont.truetype('Montserrat-Regular.ttf', 25), fill=(0,0,0))
-        twimg = Image.open("Twitter_logo_blue.png").resize((20,20))
-        tw,th = self.draw_image(twimg, (5,lh + 78), twimg)
+
+        tw,th = self.draw_image(self.twimg, (5,lh + 78), self.twimg)
         self.draw_text(': @IngenieurJacob', (tw+10, lh + 70), ImageFont.truetype('Montserrat-Regular.ttf', 25), fill=(0,0,0))
-        ghimg = Image.open("GitHub-Mark-32px.png").resize((20,20))
-        gw,gh = self.draw_image(ghimg, (5,lh + 108), ghimg)
+
+        gw,gh = self.draw_image(self.ghimg, (5,lh + 108), self.ghimg)
         self.draw_text(': fjacob21', (gw + 10, lh + 100), ImageFont.truetype('Montserrat-Regular.ttf', 25), fill=(0,0,0))
 
     def update(self):

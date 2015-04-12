@@ -45,7 +45,7 @@ class twitter_screen(screen.screen):
 
     def get_latess_tweet(self):
         try:
-            pycon = self.twitter.search.tweets(q="pycon", lang="en")
+            pycon = self.twitter.search.tweets(q="#pycon+pycon+#PyCon2015", lang="en")
             user = pycon["statuses"][0]["user"]["screen_name"].encode('utf-8')
             name = pycon["statuses"][0]["user"]["name"].encode('utf-8')
             text = pycon["statuses"][0]["text"] #.encode('utf-8')
@@ -53,7 +53,7 @@ class twitter_screen(screen.screen):
             #text = re.sub(r'^http?:\/\/.*[\r\n]*', '', text)
             text = re.sub(r'\w+:\/{2}[\d\w-]+(\.[\d\w-]+)*(?:(?:\/[^\s/]*))*', '', text)
             avatar = pycon["statuses"][0]["user"]["profile_image_url"].encode('utf-8')
-            avatar_filename = avatar.split('/')[-1]
+            avatar_filename = "avatar.img" #avatar.split('/')[-1]
             urllib.urlretrieve (avatar, avatar_filename)
             return {"user":user,"name":name,"text":text,"avatar":avatar_filename}
         except:

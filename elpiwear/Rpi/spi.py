@@ -28,7 +28,7 @@ import spidev
 
 class spi:
 
-    def __init__(self, port, device, mode=0, max_speed_hz=500000):
+    def __init__(self, port, device, mode=0, max_speed_hz=7800000):
         self.spi = spidev.SpiDev()
         self.spi.open(port, device)
         self.spi.max_speed_hz=max_speed_hz

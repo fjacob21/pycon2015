@@ -17,7 +17,7 @@ class gplus_screen(screen.screen):
         self.params = {"white":{"backcolor":(255,255,255),"textcolor":(0,0,0), "logo":"Red-signin-Small-base-44dp.png"},
                         "red":{"backcolor":(85,112,238),"textcolor":(0,0,0), "logo":"Red-signin-Small-base-44dp.png"}}
         self.param = self.params["white"]
-        self.posturl = "https://www.googleapis.com/plus/v1/activities?query=pycon&language=en&key=AIzaSyDDNE6OhN1PxPNRwYxlct6ZXj1VX67Pxo8"
+        self.posturl = "https://www.googleapis.com/plus/v1/activities?query=pycon%2C%23pycon%2CPyCon2015%2C%23PyCon2015&language=en&key=AIzaSyDDNE6OhN1PxPNRwYxlct6ZXj1VX67Pxo8"
         self.twimage = Image.open(self.param["logo"])
         self.twimage = self.twimage.resize((40,40))
         self.update_time = 60*15 #In second!!
