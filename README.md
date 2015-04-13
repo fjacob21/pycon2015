@@ -9,3 +9,23 @@ Normally I would have used C to do the hardware access codes but as it is Pycon 
 
 
 =^..^=
+
+Thanks to all my supplier to build such wonderful product!
+
+IL9341.py and ads1015
+Copyright (c) 2015 Adafruit Industries
+
+Intel Edison
+Copyright (c) 2015 Intel Corporation
+
+Raspberry Pi
+Copyright (c) 2015 RASPBERRY PI FOUNDATION
+
+Twitter logo and name
+Copyright (c) 2015 Twitter, Inc.
+
+Google+ logo and name
+Copyright (c) 2015 Google, Inc.
+
+GitHub logo and name
+Copyright (c) 2015 GitHub, Inc
